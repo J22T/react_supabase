@@ -1,4 +1,7 @@
-import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { userContext } from "./App";
+import { Link, Outlet } from "react-router-dom";
+import Login from "./Login";
 
 export default function MessageBoard() {
   const userProfile = useContext(UserContext);

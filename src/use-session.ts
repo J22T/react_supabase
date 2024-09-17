@@ -1,6 +1,7 @@
 import { RealtimeChannel, Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { supaClient } from "./supa-client";
+import { Navigate } from "react-router-dom";
 
 export interface UserProfile {
   username: string;
@@ -18,6 +19,7 @@ export function useSession(): SupashipUserInfo {
     session: null,
   });
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
+  const navigate = Navigate();
   useEffect(() => {
     supaClient.auth.getSession().then(({ data: { session } }) => {
       setUserInfo({ ...userInfo, session });
@@ -50,6 +52,9 @@ export function useSession(): SupashipUserInfo {
       .filter("user_id", "eq", userId);
     if (data?.[0]) {
       setUserInfo({ ...userInfo, profile: data?.[0] });
+    } else {
+      setReturnPath();
+      Navigate("/welcome");
     }
     return supaClient
       .channel(`public:user_profiles`)
